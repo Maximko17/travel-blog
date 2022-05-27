@@ -1,10 +1,21 @@
-FROM node:16.15.0-alpine
-
+FROM node:16.15.0-alpine AS base
 WORKDIR /app
-COPY package.json .
+COPY package.json ./
+COPY tsconfig.json ./
 RUN npm install
-COPY . .
+COPY ./src ./src
 
-CMD [ "npm", "start" ]
+FROM base AS dev
+CMD npm run dev
+EXPOSE ${NODE_PORT}
 
+FROM base AS preprod
+RUN npm run build
 
+FROM node:16.15.0-alpine AS prod
+WORKDIR /app
+COPY package.json ./
+RUN npm install --only=production
+COPY --from=preprod /app/dist ./dist
+CMD npm start
+EXPOSE ${NODE_PORT}
