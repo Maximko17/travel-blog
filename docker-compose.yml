@@ -2,22 +2,22 @@ version: '3.8'
 
 services:
   app:
-    container_name: "travel-blog-backend"
-    image: maximko/travel-blog-backend
+    container_name: "travel-blog-server"
+    image: maximko/travel-blog-server
     depends_on:
       - db
-    env_file: .env
+    env_file: ./server/.env
     restart: unless-stopped
   
   db:
     container_name: "travel-blog-postgres"
     image: postgres:14-alpine
-    env_file: .env
+    env_file: ./server/.env
     restart: unless-stopped
     volumes:
-      - postgresDb:/var/lib/postgresql/data
+      - postgresDbData:/var/lib/postgresql/data
 
 volumes: 
-  postgresDb: 
+  postgresDbData: 
 
 

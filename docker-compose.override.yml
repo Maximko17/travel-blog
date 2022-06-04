@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: "travel-blog-server-dev"
+    build: 
+      context: ./server
+      target: "dev"
+    volumes:
+      - type: bind
+        source: ./server/src
+        target: /app/src
+    env_file: ./server/.env.development
+    ports:
+      - 8080:${NODE_PORT}
+  
+  db:
+    container_name: "travel-blog-postgres-dev"
+    env_file: ./server/.env.development
+    ports:
+      - 5433:5432
+    volumes:
+      - postgresDbDataDev:/var/lib/postgresql/data
+      # - ./server/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+volumes: 
+  postgresDbDataDev: 
+
