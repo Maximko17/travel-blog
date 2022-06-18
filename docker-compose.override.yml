@@ -18,7 +18,7 @@ services:
     container_name: "travel-blog-postgres-dev"
     env_file: ./server/.env.development
     ports:
-      - 5433:5432
+      - 5433:${DB_PORT}
     volumes:
       - postgresDbDataDev:/var/lib/postgresql/data
       # - ./server/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
