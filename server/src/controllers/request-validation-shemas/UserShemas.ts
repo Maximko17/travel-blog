@@ -11,4 +11,5 @@ export const signInSchema = Joi.object({
       "string.base": "Поле не заполнено!",
       "any.required": "Поле не заполнено",
    }),
+   confirmPassword: Joi.ref("password"),
 });

@@ -1,4 +1,5 @@
-import { Sequelize } from "sequelize";
+import path from "path";
+import { Sequelize } from "sequelize-typescript";
 const { DB_USER, DB_PASSWORD, DB_PORT, DB_NAME } = process.env;
 
 if (!DB_NAME) {
@@ -22,7 +23,9 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
    timezone: "+00:00",
    define: {
       timestamps: false,
+      underscored: true,
    },
+   models: [path.resolve(__dirname, "../models")],
 });
 
 export default sequelize;

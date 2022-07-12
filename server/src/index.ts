@@ -1,6 +1,5 @@
 import { app } from "./app";
 import db, { openDBConnection } from "./config/db";
-import "./model/associations";
 const { NODE_PORT, NODE_ENV } = process.env;
 
 (async () => {

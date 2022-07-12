@@ -1,11 +1,11 @@
 import express from "express";
-import { userRoutes } from "./controller/UserRoutes";
+import UserController from "./controllers/UserController";
 import { NotFoundError } from "./errors/NotFoundError";
-import { errorHandler } from "./middleware/ErrorHandler";
+import { errorHandler } from "./middlewares/ErrorHandler";
 
 const app = express();
 
-app.use(userRoutes);
+app.use("/api/user", UserController);
 
 app.all("*", () => {
    throw new NotFoundError();

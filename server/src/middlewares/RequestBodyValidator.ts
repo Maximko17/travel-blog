@@ -8,8 +8,6 @@ export const validateRequestBody =
       const { error, value } = schema.validate(req.body, { abortEarly: false });
 
       if (error) {
-         console.log(error.details);
-
          throw new RequestValidationError(error);
       }
 
