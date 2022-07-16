@@ -1,13 +1,13 @@
+import { inject, injectable } from "inversify";
+import DI_TYPES from "../config/DIContainerTypes";
 import { RoleName } from "../models/Role";
 import { IRoleRepository } from "../repository/interfaces/IRoleRepository";
 import { IRoleService } from "./interfaces/IRoleService";
 
+@injectable()
 export class RoleServiceImpl implements IRoleService {
-   private readonly _roleRepository: IRoleRepository;
-
-   constructor(roleRepository: IRoleRepository) {
-      this._roleRepository = roleRepository;
-   }
+   @inject(DI_TYPES.IRoleRepository)
+   private readonly _roleRepository!: IRoleRepository;
 
    findByRoleName = async (roleName: RoleName) => {
       const role = await this._roleRepository.findByName(roleName);

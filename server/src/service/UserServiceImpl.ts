@@ -1,3 +1,5 @@
+import { inject, injectable } from "inversify";
+import DI_TYPES from "../config/DIContainerTypes";
 import { RoleName } from "../models/Role";
 import { User } from "../models/User";
 import { IUserRepository } from "../repository/interfaces/IUserRepository";
@@ -5,19 +7,16 @@ import { Crypto } from "../utils/Crypto";
 import { IRoleService } from "./interfaces/IRoleService";
 import { IUserService, IUserSignUpInfo } from "./interfaces/IUserService";
 
+@injectable()
 export class UserServiceImpl implements IUserService {
-   private readonly _userRepository: IUserRepository;
-   private readonly _roleService: IRoleService;
+   @inject(DI_TYPES.IUserRepository)
+   private readonly _userRepository!: IUserRepository;
 
-   constructor(userRepository: IUserRepository, roleService: IRoleService) {
-      this._userRepository = userRepository;
-      this._roleService = roleService;
-   }
+   @inject(DI_TYPES.IRoleService)
+   private readonly _roleService!: IRoleService;
 
    signUp = async (userInfo: IUserSignUpInfo) => {
       const { login, password, confirmPassword } = userInfo;
-
-      console.log(Object.values(RoleName));
 
       const existUser = await this._userRepository.findByLogin(login);
       if (existUser) {

@@ -1,5 +1,5 @@
-import { app } from "./app";
-import db, { openDBConnection } from "./config/db";
+import { AppBootstrap } from "./AppBootstrap";
+import db, { openDBConnection } from "./config/DBConfig";
 const { NODE_PORT, NODE_ENV } = process.env;
 
 (async () => {
@@ -17,6 +17,8 @@ const { NODE_PORT, NODE_ENV } = process.env;
    } catch (error) {
       console.log(error);
    }
+
+   const app = new AppBootstrap().getApp();
 
    app.listen(NODE_PORT, () => {
       console.log("Listening on port", NODE_PORT);

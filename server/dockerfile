@@ -14,7 +14,7 @@ RUN npm run build
 
 FROM node:16.15.0-alpine AS prod
 WORKDIR /app
-COPY package.json ./
+COPY package*.json ./
 RUN npm install --only=production
 COPY --from=preprod /app/dist ./dist
 CMD npm start
