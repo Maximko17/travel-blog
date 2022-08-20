@@ -1,5 +1,6 @@
 server/node_modules
 server/dist
+server/logs
 server/.env
 server/migration
 server/.env.development

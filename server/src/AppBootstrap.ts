@@ -1,20 +1,34 @@
-import "reflect-metadata";
 import express from "express";
-import { Container } from "inversify";
+import { injectable } from "inversify";
+import morgan from "morgan";
+import "reflect-metadata";
 import DIContainer from "./config/DIContainer";
 import DI_TYPES from "./config/DIContainerTypes";
 import { UserController } from "./controllers/UserController";
 import { NotFoundError } from "./errors/NotFoundError";
+import logger from "./logger";
 import { errorHandler } from "./middlewares/ErrorHandler";
 
+@injectable()
 export class AppBootstrap {
    private readonly _app;
-   private readonly _diContainer: Container;
+   private readonly _diContainer;
 
    constructor() {
       this._app = express();
       this._diContainer = DIContainer.getContainer();
+      this.setMiddlewares();
       this.setRoutes();
+   }
+
+   setMiddlewares() {
+      this._app.use(
+         morgan(":method :url :status - :response-time ms", {
+            stream: {
+               write: (message) => logger.http(message.trim()),
+            },
+         })
+      );
    }
 
    setRoutes = () => {

@@ -37,6 +37,6 @@ export class Role extends Model<RoleAttributes, RoleCreationAttributes> {
    })
    name!: string;
 
-   @HasMany(() => User)
+   @HasMany(() => User, "roleId")
    users!: User[];
 }

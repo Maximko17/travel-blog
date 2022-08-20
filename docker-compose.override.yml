@@ -12,13 +12,13 @@ services:
         target: /app/src
     env_file: ./server/.env.development
     ports:
-      - 8080:${NODE_PORT}
+      - ${NODE_PORT}:${NODE_PORT}
   
   db:
     container_name: "travel-blog-postgres-dev"
     env_file: ./server/.env.development
     ports:
-      - 5433:${DB_PORT}
+      - ${POSTGRES_PORT}:5432
     volumes:
       - postgresDbDataDev:/var/lib/postgresql/data
       # - ./server/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql

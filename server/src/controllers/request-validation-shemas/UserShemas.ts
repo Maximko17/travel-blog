@@ -13,3 +13,16 @@ export const signInSchema = Joi.object({
    }),
    confirmPassword: Joi.ref("password"),
 });
+
+export const logInSchema = Joi.object({
+   login: Joi.string().required().messages({
+      "string.empty": "Поле не заполнено!",
+      "string.base": "Поле не заполнено!",
+      "any.required": "Поле не заполнено",
+   }),
+   password: Joi.string().required().messages({
+      "string.empty": "Поле не заполнено!",
+      "string.base": "Поле не заполнено!",
+      "any.required": "Поле не заполнено",
+   }),
+});

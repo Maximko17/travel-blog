@@ -1,31 +1,39 @@
 import path from "path";
 import { Sequelize } from "sequelize-typescript";
-const { DB_USER, DB_PASSWORD, DB_PORT, DB_NAME } = process.env;
+import { createNamespace } from "cls-hooked";
+import logger from "../logger";
 
-if (!DB_NAME) {
-   throw new Error("Env. variable 'DB_NAME' not found");
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_DB } =
+   process.env;
+
+if (!POSTGRES_DB) {
+   throw new Error("Env. variable 'POSTGRES_DB' not found");
 }
-if (!DB_USER) {
-   throw new Error("Env. variable 'DB_USER' not found");
+if (!POSTGRES_USER) {
+   throw new Error("Env. variable 'POSTGRES_USER' not found");
 }
-if (!DB_PASSWORD) {
-   throw new Error("Env. variable 'DB_PASSWORD' not found");
+if (!POSTGRES_PASSWORD) {
+   throw new Error("Env. variable 'POSTGRES_PASSWORD' not found");
 }
-if (!DB_PORT) {
-   throw new Error("Env. variable 'DB_PORT' not found");
+if (!POSTGRES_PORT) {
+   throw new Error("Env. variable 'POSTGRES_PORT' not found");
 }
 
-const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-   port: +DB_PORT,
+// Необходимо для упрощения работы с транзакциями, а именно, чтобы не передавать вручную значение транзакции в каждый запрос к бд
+const namespace = createNamespace("ns");
+Sequelize.useCLS(namespace);
+
+const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
+   port: +POSTGRES_PORT,
    host: "db",
    dialect: "postgres",
-   logging: console.log,
    timezone: "+00:00",
    define: {
       timestamps: false,
       underscored: true,
    },
    models: [path.resolve(__dirname, "../models")],
+   logging: (msg) => logger.info(msg),
 });
 
 export default sequelize;

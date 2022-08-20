@@ -3,12 +3,14 @@ import {
    BelongsTo,
    Column,
    ForeignKey,
+   HasOne,
    Model,
    PrimaryKey,
    Table,
    Unique,
 } from "sequelize-typescript";
 import { Role } from "./Role";
+import { Token } from "./Token";
 
 export interface UserAttributes {
    id: number;
@@ -17,6 +19,7 @@ export interface UserAttributes {
    email: string;
    roleId: number;
    role: Role;
+   token: Token;
 }
 
 export interface UserCreationAttributes
@@ -47,4 +50,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
 
    @BelongsTo(() => Role)
    role!: Role;
+
+   @HasOne(() => Token)
+   token!: Token;
 }

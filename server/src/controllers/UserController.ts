@@ -1,10 +1,14 @@
 import app, { NextFunction, Request, Response, Router } from "express";
 import { validateRequestBody } from "../middlewares/RequestBodyValidator";
 import {
+   IUserLogInInfo,
    IUserService,
    IUserSignUpInfo,
 } from "../service/interfaces/IUserService";
-import { signInSchema } from "./request-validation-shemas/UserShemas";
+import {
+   logInSchema,
+   signInSchema,
+} from "./request-validation-shemas/UserShemas";
 import { inject, injectable } from "inversify";
 import DI_TYPES from "../config/DIContainerTypes";
 
@@ -26,6 +30,12 @@ export class UserController {
          validateRequestBody(signInSchema),
          this.signUp
       );
+      router.post(
+         this._ROUTES.logIn,
+         app.json(),
+         validateRequestBody(logInSchema),
+         this.logIn
+      );
 
       return router;
    };
@@ -37,12 +47,29 @@ export class UserController {
    ) => {
       try {
          const { login, confirmPassword, password } = req.body;
-         await this._userService.signUp({
+         const tokens = await this._userService.signUp({
             login,
             password,
             confirmPassword,
          });
-         res.status(200).send();
+         res.status(201).send(tokens);
+      } catch (error) {
+         next(error);
+      }
+   };
+
+   logIn = async (
+      req: Request<{}, {}, IUserLogInInfo, {}>,
+      res: Response,
+      next: NextFunction
+   ) => {
+      try {
+         const { login, password } = req.body;
+         const tokens = await this._userService.logIn({
+            login,
+            password,
+         });
+         res.status(200).send(tokens);
       } catch (error) {
          next(error);
       }

@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { User } from "../models/User";
+import { User, UserCreationAttributes } from "../models/User";
 import { IUserRepository } from "./interfaces/IUserRepository";
 
 @injectable()
@@ -18,5 +18,9 @@ export class UserRepositoryImpl implements IUserRepository {
 
    save = (user: User) => {
       return user.save();
+   };
+
+   create = (userAttrs: UserCreationAttributes, options?: object) => {
+      return User.create(userAttrs, options);
    };
 }

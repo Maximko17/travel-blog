@@ -1,4 +1,4 @@
-import { User } from "../../models/User";
+import { User, UserCreationAttributes } from "../../models/User";
 
 export interface IUserRepository {
    findAll: () => Promise<User[]>;
@@ -8,4 +8,9 @@ export interface IUserRepository {
    findByLogin: (login: string) => Promise<User | null>;
 
    save: (user: User) => Promise<User>;
+
+   create: (
+      userAttrs: UserCreationAttributes,
+      options?: object
+   ) => Promise<User>;
 }
